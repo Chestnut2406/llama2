@@ -30,18 +30,18 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 def clear_chat_history():
-    st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Generating ESG Report..."}]
 st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
 # Function for generating LLaMA2 response
 # Refactored from <https://github.com/a16z-infra/llama2-chatbot>
 def generate_llama2_response(prompt_input):
     string_dialogue = "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as 'Assistant'."
-    for dict_message in st.session_state.messages:
-        if dict_message["role"] == "user":
-            string_dialogue += "User: " + dict_message["content"] + "\\n\\n"
-        else:
-            string_dialogue += "Assistant: " + dict_message["content"] + "\\n\\n"
+    # for dict_message in st.session_state.messages:
+    #     if dict_message["role"] == "user":
+    #         string_dialogue += "User: " + dict_message["content"] + "\\n\\n"
+    #     else:
+    #         string_dialogue += "Assistant: " + dict_message["content"] + "\\n\\n"
     output = replicate.run('replicate/llama-2-70b:14ce4448d5e7e9ed0c37745ac46eca157aab09061f0c179ac2b323b5de56552b', 
                            input={"prompt": f"{string_dialogue} {prompt_input} Assistant: ",
                                   "temperature":0.1, "top_p":0.9, "max_length":512, "repetition_penalty":1})
